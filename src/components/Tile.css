@@ -33,8 +33,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1.5px solid rgba(15, 23, 42, 0.1);
+    /* Definitive border for tiles */
 }
 
 .tile-front {
@@ -66,4 +67,10 @@
 
 .tile:hover:not(.flipped):not(.matched) .tile-inner {
     transform: scale(1.05);
+}
+
+[data-theme='dark'] .tile-front,
+[data-theme='dark'] .tile-back {
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    /* Brighter border for dark mode */
 }

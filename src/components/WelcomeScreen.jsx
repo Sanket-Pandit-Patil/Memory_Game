@@ -6,8 +6,7 @@ const WelcomeScreen = ({ onStart }) => {
     return (
         <div className="welcome-screen">
             <div className="welcome-content">
-                <h1>Welcome to Brainy Flip</h1>
-                <p className="subtitle">Test your memory and match all pairs of hidden icons!</p>
+                <p className="welcome-intro">Test your memory and match all pairs of hidden icons!</p>
 
                 <div className="instructions">
                     <h3>How to Play:</h3>

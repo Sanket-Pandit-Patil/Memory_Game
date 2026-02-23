@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Tile from './Tile';
+import { soundManager } from '../utils/soundManager';
 import './MemoryGame.css';
 
 const MemoryGame = ({ icons, onWin, onMove }) => {
@@ -21,6 +22,7 @@ const MemoryGame = ({ icons, onWin, onMove }) => {
 
     // Handle a choice
     const handleFlip = (tile) => {
+        soundManager.play('flip');
         choiceOne ? setChoiceTwo(tile) : setChoiceOne(tile);
 
         // Update flipped state in local tiles

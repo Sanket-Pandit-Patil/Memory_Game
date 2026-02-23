@@ -76,10 +76,7 @@ const App = () => {
   }, [gameStatus, config.timeLimit]);
 
   const handleStart = async (difficultyConfig) => {
-    // 1. Clear status immediately to unmount previous screen
-    setGameStatus('welcome');
-
-    // 2. Reset stats
+    // 1. Reset stats
     setMoves(0);
     setSeconds(0);
     setMatches(0);
@@ -170,7 +167,6 @@ const App = () => {
       soundManager.play('match');
     } else {
       setStreak(0);
-      soundManager.play('mismatch');
     }
 
     setMoves(prevMoves => {
