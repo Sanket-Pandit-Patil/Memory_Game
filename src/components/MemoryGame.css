@@ -1,0 +1,22 @@
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+    animation: fadeIn 0.5s ease;
+}
+
+@media (max-width: 500px) {
+    .game-grid {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-height: 700px) and (orientation: landscape) {
+    .game-grid {
+        grid-template-columns: repeat(8, 1fr);
+        max-width: 100%;
+    }
+}
