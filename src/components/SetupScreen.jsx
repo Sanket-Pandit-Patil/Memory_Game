@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Target, Clock, Puzzle, Play } from 'lucide-react';
 import './SetupScreen.css';
 
@@ -6,8 +6,22 @@ const SetupScreen = ({ onStart }) => {
     const [difficulty, setDifficulty] = useState('easy'); // 'easy', 'medium', 'hard'
     const [mediumType, setMediumType] = useState('time'); // 'time' or 'moves'
 
-    const [timeLimit, setTimeLimit] = useState(45);
-    const [movesLimit, setMovesLimit] = useState(25);
+    const [timeLimit, setTimeLimit] = useState(50);
+    const [movesLimit, setMovesLimit] = useState(20);
+
+    // Apply specific user defaults when changing difficulty/type
+    useEffect(() => {
+        if (difficulty === 'medium') {
+            if (mediumType === 'time') {
+                setTimeLimit(50);
+            } else {
+                setMovesLimit(20);
+            }
+        } else if (difficulty === 'hard') {
+            setTimeLimit(35);
+            setMovesLimit(15);
+        }
+    }, [difficulty, mediumType]);
 
     const handleStart = () => {
         let config = { difficulty };
