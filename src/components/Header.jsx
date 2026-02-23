@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Moon, RotateCcw, Volume2, VolumeX } from 'lucide-react';
+import { RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import './Header.css';
 
 const Header = ({ moves, seconds, config, isDarkMode, isMuted, toggleTheme, toggleMute, restartGame }) => {
@@ -33,9 +33,6 @@ const Header = ({ moves, seconds, config, isDarkMode, isMuted, toggleTheme, togg
                 </button>
                 <button onClick={restartGame} className="icon-button" title="Restart Game">
                     <RotateCcw size={20} />
-                </button>
-                <button onClick={toggleTheme} className="icon-button" title="Toggle Theme">
-                    {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
             </div>
         </header>

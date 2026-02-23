@@ -7,6 +7,7 @@ import ResultScreen from './components/ResultScreen';
 import Header from './components/Header';
 import { fetchEmojis } from './utils/api';
 import { soundManager } from './utils/soundManager';
+import { Sun, Moon } from 'lucide-react';
 import './index.css';
 
 const App = () => {
@@ -216,6 +217,18 @@ const App = () => {
 
   return (
     <div className="app-container">
+      {(gameStatus === 'welcome' || gameStatus === 'setup') && (
+        <nav className="global-navbar">
+          <div className="nav-brand">
+            <h1>Brainy Flip</h1>
+            <p className="subtitle">Test your memory</p>
+          </div>
+          <button onClick={toggleTheme} className="theme-toggle-btn" title="Toggle Theme">
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        </nav>
+      )}
+
       {gameStatus === 'welcome' && (
         <WelcomeScreen onStart={() => setGameStatus('setup')} />
       )}
