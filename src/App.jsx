@@ -75,21 +75,27 @@ const App = () => {
   }, [gameStatus, config.timeLimit]);
 
   const handleStart = async (difficultyConfig) => {
-    // Sound Manager Init (must be triggered by user interaction)
-    soundManager.init();
-
-    setDifficulty(difficultyConfig.difficulty);
-    setConfig(difficultyConfig);
-    setGameStatus('playing');
+    // 1. Reset all stats immediately to prevent stale checks from previous game
     setMoves(0);
     setSeconds(0);
     setMatches(0);
     setStreak(0);
     setMaxStreak(0);
     setAttempts(0);
+    setGameResult(null);
+    setIcons([]); // Clear icons while loading
 
+    // 2. Set config and initialize sound
+    setDifficulty(difficultyConfig.difficulty);
+    setConfig(difficultyConfig);
+    soundManager.init();
+
+    // 3. Fetch icons
     const fetched = await fetchEmojis(8);
     setIcons(fetched);
+
+    // 4. Finally marker as playing
+    setGameStatus('playing');
     soundManager.play('win'); // Short start chime
   };
 
@@ -136,11 +142,14 @@ const App = () => {
   };
 
   const onMove = (success) => {
-    setMoves(prev => prev + 1);
     setAttempts(prev => prev + 1);
 
     if (success) {
-      setMatches(prev => prev + 1);
+      setMatches(prev => {
+        const next = prev + 1;
+        // The win state itself is handled via handleWin (triggered by MemoryGame delay)
+        return next;
+      });
       setStreak(prev => {
         const next = prev + 1;
         if (next > maxStreak) setMaxStreak(next);
@@ -151,14 +160,20 @@ const App = () => {
       setStreak(0);
       soundManager.play('mismatch');
     }
+
+    // Increment moves LAST to ensure other stats are processed first in hooks
+    setMoves(prev => prev + 1);
   };
 
-  // One more check for moves limit after the move state is updated
+  // Check for configuration limits
   useEffect(() => {
-    if (gameStatus === 'playing' && config.movesLimit && moves >= config.movesLimit) {
-      // Check if they just won on the last move
-      if (matches < 8) {
-        handleEarlyStop('moves');
+    if (gameStatus === 'playing') {
+      // Moves Limit Check
+      if (config.movesLimit && moves >= config.movesLimit) {
+        // Only stop if we haven't matched everything yet
+        if (matches < 8) {
+          handleEarlyStop('moves');
+        }
       }
     }
   }, [moves, matches, config.movesLimit, gameStatus]);
