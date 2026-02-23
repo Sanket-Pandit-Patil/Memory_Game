@@ -75,7 +75,10 @@ const App = () => {
   }, [gameStatus, config.timeLimit]);
 
   const handleStart = async (difficultyConfig) => {
-    // 1. Reset all stats immediately to prevent stale checks from previous game
+    // 1. Clear status immediately to unmount previous screen
+    setGameStatus('welcome');
+
+    // 2. Reset stats
     setMoves(0);
     setSeconds(0);
     setMatches(0);
@@ -83,20 +86,20 @@ const App = () => {
     setMaxStreak(0);
     setAttempts(0);
     setGameResult(null);
-    setIcons([]); // Clear icons while loading
+    setIcons([]);
 
-    // 2. Set config and initialize sound
+    // 3. Set config
     setDifficulty(difficultyConfig.difficulty);
     setConfig(difficultyConfig);
     soundManager.init();
 
-    // 3. Fetch icons
+    // 4. Fetch icons
     const fetched = await fetchEmojis(8);
     setIcons(fetched);
 
-    // 4. Finally marker as playing
+    // 5. Finally marker as playing
     setGameStatus('playing');
-    soundManager.play('win'); // Short start chime
+    soundManager.play('win');
   };
 
   const handleEarlyStop = useCallback((cause) => {

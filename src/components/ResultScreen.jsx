@@ -3,6 +3,7 @@ import { Trophy, XCircle, RotateCcw, Settings, Play } from 'lucide-react';
 import './ResultScreen.css';
 
 const ResultScreen = ({ result, stats, onRestart, onChangeDifficulty, onPractice }) => {
+    if (!result) return null;
     const { isWin, cause } = result;
     const { moves, seconds, totalMoves, totalTime, accuracy, streakContent, difficulty } = stats;
 
