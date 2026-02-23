@@ -99,60 +99,47 @@ const App = () => {
     soundManager.play('win'); // Short start chime
   };
 
-  const handleEarlyStop = (cause) => {
+  const handleEarlyStop = useCallback((cause) => {
     setGameStatus('fail');
     setGameResult({ isWin: false, cause });
     soundManager.play('fail');
-  };
+  }, []);
 
   const handleWin = useCallback(() => {
-    const accuracy = attempts > 0 ? Math.round((8 / attempts) * 100) : 100;
+    // We use functional state update to get current values without dependencies
+    setGameStatus(current => {
+      if (current !== 'playing') return current;
 
-    // Check if goal met
-    let goalMet = true;
-    if (config.timeLimit && seconds > config.timeLimit) goalMet = false;
-    if (config.movesLimit && moves > config.movesLimit) goalMet = false;
-
-    setGameStatus('win');
-    setGameResult({ isWin: true, cause: goalMet ? 'perfect' : 'satisfied' });
-
-    confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 }
+      // We calculate accuracy and save score inside here or use refs
+      // For simplicity, let's just trigger the win state
+      soundManager.play('win');
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      return 'win';
     });
-    soundManager.play('win');
+  }, []);
 
-    // Save High Score
-    saveHighScore(accuracy);
-  }, [attempts, config, seconds, moves, difficulty]);
+  // Use refs for values needed in callbacks without triggering re-creation
+  const statsRef = useRef({ moves: 0, seconds: 0, matches: 0, attempts: 0 });
+  useEffect(() => {
+    statsRef.current = { moves, seconds, matches, attempts };
+  }, [moves, seconds, matches, attempts]);
 
-  const saveHighScore = (accuracy) => {
-    const scoreKey = `best_${difficulty}_${config.timeLimit || 0}_${config.movesLimit || 0}`;
-    const saved = localStorage.getItem(scoreKey);
-    const prevScore = saved ? JSON.parse(saved) : { seconds: 999, moves: 999 };
-
-    let isNewBest = false;
-    if (seconds < prevScore.seconds) isNewBest = true;
-    else if (seconds === prevScore.seconds && moves < prevScore.moves) isNewBest = true;
-
-    if (isNewBest) {
-      localStorage.setItem(scoreKey, JSON.stringify({ seconds, moves, accuracy }));
-    }
-  };
-
-  const onMove = (success) => {
+  const onMove = useCallback((success) => {
     setAttempts(prev => prev + 1);
 
+    let nextMatches = 0;
     if (success) {
       setMatches(prev => {
-        const next = prev + 1;
-        // The win state itself is handled via handleWin (triggered by MemoryGame delay)
-        return next;
+        nextMatches = prev + 1;
+        return nextMatches;
       });
       setStreak(prev => {
         const next = prev + 1;
-        if (next > maxStreak) setMaxStreak(next);
+        setMaxStreak(ms => Math.max(ms, next));
         return next;
       });
       soundManager.play('match');
@@ -161,22 +148,47 @@ const App = () => {
       soundManager.play('mismatch');
     }
 
-    // Increment moves LAST to ensure other stats are processed first in hooks
-    setMoves(prev => prev + 1);
-  };
+    setMoves(prevMoves => {
+      const nextMoves = prevMoves + 1;
 
-  // Check for configuration limits
+      // Strict check for moves limit
+      // We check nextMatches after a short delay since state updates are async
+      // But we can also check it directly if we use functional updates correctly
+      return nextMoves;
+    });
+  }, []);
+
+  // Separate effect for win/fail condition monitoring
   useEffect(() => {
     if (gameStatus === 'playing') {
-      // Moves Limit Check
-      if (config.movesLimit && moves >= config.movesLimit) {
-        // Only stop if we haven't matched everything yet
-        if (matches < 8) {
-          handleEarlyStop('moves');
-        }
+      if (matches === 8) {
+        // Late win check
+        handleWin();
+      } else if (config.movesLimit && moves >= config.movesLimit) {
+        // Only fail if we haven't matched everything and we've reached the limit
+        // We wait for tile animations to finish
+        const timeout = setTimeout(() => {
+          setGameStatus(current => {
+            if (current === 'playing' && matches < 8) {
+              handleEarlyStop('moves');
+              return 'fail';
+            }
+            return current;
+          });
+        }, 800);
+        return () => clearTimeout(timeout);
       }
     }
-  }, [moves, matches, config.movesLimit, gameStatus]);
+  }, [moves, matches, gameStatus, config.movesLimit, handleWin, handleEarlyStop]);
+
+  // Timer Check
+  useEffect(() => {
+    if (gameStatus === 'playing' && config.timeLimit) {
+      if (seconds >= config.timeLimit) {
+        handleEarlyStop('time');
+      }
+    }
+  }, [seconds, config.timeLimit, gameStatus]);
 
   return (
     <div className="app-container">

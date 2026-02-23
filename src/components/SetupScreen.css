@@ -172,6 +172,27 @@ input[type="range"] {
     transition: all 0.2s ease;
 }
 
+/* Fixed Goals Tag */
+.fixed-goals {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.goal-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(79, 70, 229, 0.1);
+    color: var(--accent-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
 .setup-start-btn:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);

@@ -6,45 +6,41 @@ const SetupScreen = ({ onStart }) => {
     const [difficulty, setDifficulty] = useState('easy'); // 'easy', 'medium', 'hard'
     const [mediumType, setMediumType] = useState('time'); // 'time' or 'moves'
 
+    // Hardcoded values as requested
     const [timeLimit, setTimeLimit] = useState(50);
     const [movesLimit, setMovesLimit] = useState(20);
 
-    // Apply specific user defaults when changing difficulty/type
+    // Sync fixed values when selection changes
     useEffect(() => {
         if (difficulty === 'medium') {
             if (mediumType === 'time') {
                 setTimeLimit(50);
+                setMovesLimit(null);
             } else {
                 setMovesLimit(20);
+                setTimeLimit(null);
             }
         } else if (difficulty === 'hard') {
             setTimeLimit(35);
             setMovesLimit(15);
+        } else {
+            setTimeLimit(null);
+            setMovesLimit(null);
         }
     }, [difficulty, mediumType]);
 
     const handleStart = () => {
-        let config = { difficulty };
-
-        if (difficulty === 'medium') {
-            if (mediumType === 'time') config.timeLimit = timeLimit;
-            else config.movesLimit = movesLimit;
-        } else if (difficulty === 'hard') {
-            config.timeLimit = timeLimit;
-            config.movesLimit = movesLimit;
-        }
-
-        onStart(config);
+        onStart({ difficulty, timeLimit, movesLimit });
     };
 
     const getGoalSummary = () => {
         if (difficulty === 'easy') return "Standard practice mode. No limits.";
         if (difficulty === 'medium') {
             return mediumType === 'time'
-                ? `Finish under ${timeLimit} seconds`
-                : `Finish in ≤ ${movesLimit} moves`;
+                ? `Finish under 50 seconds`
+                : `Finish in ≤ 20 moves`;
         }
-        return `Finish under ${timeLimit}s AND ≤ ${movesLimit} moves`;
+        return `Finish under 35s AND ≤ 15 moves`;
     };
 
     return (
@@ -52,7 +48,7 @@ const SetupScreen = ({ onStart }) => {
             <div className="setup-card">
                 <header className="setup-header">
                     <h1>Choose Difficulty</h1>
-                    <p>Set your challenge and test your memory.</p>
+                    <p>Select your challenge level.</p>
                 </header>
 
                 <div className="segmented-control">
@@ -88,29 +84,18 @@ const SetupScreen = ({ onStart }) => {
                         </div>
                     )}
 
-                    {(difficulty === 'hard' || (difficulty === 'medium' && mediumType === 'time')) && (
-                        <div className="setting-group">
-                            <div className="label-row">
-                                <label>Time Limit</label>
-                                <span className="current-val">{timeLimit}s</span>
-                            </div>
-                            <input
-                                type="range" min="15" max="120" step="5"
-                                value={timeLimit} onChange={(e) => setTimeLimit(parseInt(e.target.value))}
-                            />
-                        </div>
-                    )}
-
-                    {(difficulty === 'hard' || (difficulty === 'medium' && mediumType === 'moves')) && (
-                        <div className="setting-group">
-                            <div className="label-row">
-                                <label>Moves Limit</label>
-                                <span className="current-val">{movesLimit}</span>
-                            </div>
-                            <input
-                                type="range" min="10" max="50" step="2"
-                                value={movesLimit} onChange={(e) => setMovesLimit(parseInt(e.target.value))}
-                            />
+                    {difficulty !== 'easy' && (
+                        <div className="fixed-goals">
+                            {difficulty === 'hard' ? (
+                                <>
+                                    <div className="goal-tag"><Clock size={14} /> 35 Seconds</div>
+                                    <div className="goal-tag"><Puzzle size={14} /> 15 Moves</div>
+                                </>
+                            ) : (
+                                <div className="goal-tag">
+                                    {mediumType === 'time' ? <><Clock size={14} /> 50 Seconds</> : <><Puzzle size={14} /> 20 Moves</>}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
