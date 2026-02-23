@@ -10,7 +10,19 @@
 
 @media (max-width: 500px) {
     .game-grid {
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .game-grid {
         gap: 0.5rem;
+    }
+}
+
+@media (max-width: 350px) {
+    .game-grid {
+        gap: 0.35rem;
     }
 }
 

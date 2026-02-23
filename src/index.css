@@ -49,6 +49,12 @@ body {
   padding: 24px;
 }
 
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+}
+
 .game-panel {
   max-width: 900px;
   width: 100%;
@@ -58,6 +64,13 @@ body {
   border: 1px solid var(--glass-border);
   box-shadow: var(--shadow-md);
   margin: 0 auto;
+}
+
+@media (max-width: 480px) {
+  .game-panel {
+    padding: 16px;
+    border-radius: 16px;
+  }
 }
 
 #root {
@@ -71,6 +84,12 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0.5rem;
+  }
 }
 
 /* Animations */

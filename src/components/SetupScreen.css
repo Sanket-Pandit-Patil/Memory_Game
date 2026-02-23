@@ -198,3 +198,55 @@ input[type="range"] {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
 }
+
+@media (max-width: 480px) {
+    .setup-screen {
+        min-height: calc(100vh - 2rem);
+    }
+
+    .setup-card {
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+
+    .setup-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .segmented-control {
+        margin-bottom: 1.5rem;
+    }
+
+    .segment-btn {
+        padding: 8px;
+        font-size: 0.8rem;
+    }
+
+    .difficulty-settings {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        min-height: auto;
+    }
+
+    .goal-preview {
+        padding: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .setup-start-btn {
+        padding: 0.85rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .setup-card {
+        padding: 1.25rem;
+    }
+
+    .fixed-goals {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+}

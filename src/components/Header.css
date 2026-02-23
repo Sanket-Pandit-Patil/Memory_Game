@@ -114,8 +114,10 @@
 @media (max-width: 768px) {
     .game-header {
         grid-template-columns: 1fr auto;
-        grid-template-rows: auto auto auto;
-        gap: 16px;
+        grid-template-rows: auto auto;
+        gap: 12px;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
     }
 
     .brand-section {
@@ -123,9 +125,25 @@
         grid-row: 1;
     }
 
+    .brand-section h1 {
+        font-size: 1.25rem;
+    }
+
     .actions-section {
         grid-column: 2;
         grid-row: 1;
+        gap: 8px;
+    }
+
+    .icon-button {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+    }
+
+    .icon-button svg {
+        width: 18px;
+        height: 18px;
     }
 
     .stats-section {
@@ -133,12 +151,33 @@
         grid-row: 2;
         display: grid;
         grid-template-columns: 1fr 1fr;
+        gap: 8px;
     }
 
     .stat-card {
         min-width: 0;
         width: 100%;
+        height: 48px;
+        padding: 4px 12px;
+        border-radius: 10px;
     }
 
-    /* Optional: Full width restart if needed, but let's keep it compact for now */
+    .stat-value {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .brand-section h1 {
+        font-size: 1.1rem;
+    }
+
+    .brand-section .subtitle {
+        font-size: 0.75rem;
+    }
+
+    .icon-button {
+        width: 38px;
+        height: 38px;
+    }
 }

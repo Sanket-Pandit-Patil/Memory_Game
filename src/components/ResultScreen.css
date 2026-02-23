@@ -145,3 +145,53 @@
     font-size: 0.85rem;
     font-style: italic;
 }
+
+@media (max-width: 480px) {
+    .result-screen {
+        min-height: calc(100vh - 2rem);
+    }
+
+    .result-card {
+        padding: 2rem 1.5rem;
+        border-radius: 20px;
+    }
+
+    .result-card h1 {
+        font-size: 1.5rem;
+    }
+
+    .performance-msg {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stats-grid {
+        gap: 8px;
+        margin-bottom: 2rem;
+    }
+
+    .stat-item {
+        padding: 0.75rem;
+    }
+
+    .stat-item .value {
+        font-size: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-ghost {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .result-card {
+        padding: 1.5rem 1rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
