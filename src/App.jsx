@@ -106,21 +106,42 @@ const App = () => {
   }, []);
 
   const handleWin = useCallback(() => {
-    // We use functional state update to get current values without dependencies
     setGameStatus(current => {
       if (current !== 'playing') return current;
 
-      // We calculate accuracy and save score inside here or use refs
-      // For simplicity, let's just trigger the win state
+      const { attempts, seconds, moves } = statsRef.current;
+      const accuracy = attempts > 0 ? Math.round((8 / attempts) * 100) : 100;
+
+      // Check if goal met
+      let goalMet = true;
+      if (config.timeLimit && seconds > config.timeLimit) goalMet = false;
+      if (config.movesLimit && moves > config.movesLimit) goalMet = false;
+
+      setGameResult({ isWin: true, cause: goalMet ? 'perfect' : 'satisfied' });
+
       soundManager.play('win');
       confetti({
         particleCount: 150,
         spread: 70,
         origin: { y: 0.6 }
       });
+
+      // Save score
+      const scoreKey = `best_${difficulty}_${config.timeLimit || 0}_${config.movesLimit || 0}`;
+      const saved = localStorage.getItem(scoreKey);
+      const prevScore = saved ? JSON.parse(saved) : { seconds: 999, moves: 999 };
+
+      let isNewBest = false;
+      if (seconds < prevScore.seconds) isNewBest = true;
+      else if (seconds === prevScore.seconds && moves < prevScore.moves) isNewBest = true;
+
+      if (isNewBest) {
+        localStorage.setItem(scoreKey, JSON.stringify({ seconds, moves, accuracy }));
+      }
+
       return 'win';
     });
-  }, []);
+  }, [config.timeLimit, config.movesLimit, difficulty]);
 
   // Use refs for values needed in callbacks without triggering re-creation
   const statsRef = useRef({ moves: 0, seconds: 0, matches: 0, attempts: 0 });
