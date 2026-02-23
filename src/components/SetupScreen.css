@@ -1,0 +1,179 @@
+.setup-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 4rem);
+    animation: scaleIn 0.4s ease;
+}
+
+.setup-card {
+    background: var(--card-bg);
+    padding: 2.5rem;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--glass-border);
+}
+
+.setup-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.setup-header h1 {
+    font-size: 1.75rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.setup-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Segmented Control */
+.segmented-control {
+    display: flex;
+    background: var(--bg-color);
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--glass-border);
+}
+
+.segment-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+}
+
+.segment-btn.active {
+    background: var(--card-bg);
+    color: var(--accent-color);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Settings Group */
+.difficulty-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    min-height: 140px;
+    /* Prevent layout jump */
+}
+
+.setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.setting-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.toggle-group {
+    display: flex;
+    gap: 10px;
+}
+
+.toggle-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.toggle-btn.active {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.current-val {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    background: rgba(79, 70, 229, 0.1);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent-color);
+}
+
+/* Goal Preview */
+.goal-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-color);
+    padding: 1rem;
+    border-radius: 14px;
+    margin-bottom: 2rem;
+    border: 1px dashed var(--accent-color);
+}
+
+.goal-icon {
+    color: var(--accent-color);
+}
+
+.goal-preview p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+/* Start Button */
+.setup-start-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+}
+
+.setup-start-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}

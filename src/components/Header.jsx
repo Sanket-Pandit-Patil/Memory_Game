@@ -1,8 +1,14 @@
 import React from 'react';
-import { Sun, Moon, RotateCcw } from 'lucide-react';
+import { Sun, Moon, RotateCcw, Volume2, VolumeX } from 'lucide-react';
 import './Header.css';
 
-const Header = ({ moves, seconds, isDarkMode, toggleTheme, restartGame }) => {
+const Header = ({ moves, seconds, config, isDarkMode, isMuted, toggleTheme, toggleMute, restartGame }) => {
+    const { timeLimit = 0, movesLimit = 0 } = config || {};
+
+    // Warning at 80% limit
+    const isTimeWarning = timeLimit && seconds >= timeLimit * 0.8;
+    const isMovesWarning = movesLimit && moves >= movesLimit * 0.8;
+
     return (
         <header className="game-header">
             <div className="brand-section">
@@ -11,17 +17,20 @@ const Header = ({ moves, seconds, isDarkMode, toggleTheme, restartGame }) => {
             </div>
 
             <div className="stats-section">
-                <div className="stat-card">
-                    <span className="stat-label">Moves</span>
-                    <span className="stat-value">{moves}</span>
+                <div className={`stat-card ${isMovesWarning ? 'warning pulse' : ''}`}>
+                    <span className="stat-label">{movesLimit ? 'Remaining' : 'Moves'}</span>
+                    <span className="stat-value">{movesLimit ? Math.max(0, movesLimit - moves) : moves}</span>
                 </div>
-                <div className="stat-card">
-                    <span className="stat-label">Time</span>
-                    <span className="stat-value">{seconds}s</span>
+                <div className={`stat-card ${isTimeWarning ? 'warning pulse' : ''}`}>
+                    <span className="stat-label">{timeLimit ? 'Remaining' : 'Time'}</span>
+                    <span className="stat-value">{timeLimit ? Math.max(0, timeLimit - seconds) : seconds}s</span>
                 </div>
             </div>
 
             <div className="actions-section">
+                <button onClick={toggleMute} className="icon-button" title={isMuted ? "Unmute" : "Mute"}>
+                    {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
                 <button onClick={restartGame} className="icon-button" title="Restart Game">
                     <RotateCcw size={20} />
                 </button>

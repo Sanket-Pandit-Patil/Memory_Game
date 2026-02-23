@@ -38,9 +38,9 @@ const MemoryGame = ({ icons, onWin, onMove }) => {
     useEffect(() => {
         if (choiceOne && choiceTwo) {
             setDisabled(true);
-            onMove();
 
             if (choiceOne.icon === choiceTwo.icon) {
+                onMove(true);
                 setTiles(prevTiles => {
                     return prevTiles.map(tile => {
                         if (tile.icon === choiceOne.icon) {
@@ -51,6 +51,7 @@ const MemoryGame = ({ icons, onWin, onMove }) => {
                 });
                 resetTurn();
             } else {
+                onMove(false);
                 setTimeout(() => {
                     setTiles(prevTiles => {
                         return prevTiles.map(tile => {
@@ -64,7 +65,7 @@ const MemoryGame = ({ icons, onWin, onMove }) => {
                 }, 1000);
             }
         }
-    }, [choiceOne, choiceTwo]);
+    }, [choiceOne, choiceTwo, onMove]);
 
     // Reset choices & increase disabled
     const resetTurn = () => {
